@@ -2,6 +2,7 @@ from typing import Optional
 import torch
 import math
 from torch import Tensor
+from torch import Size
 from torch.nn import Parameter
 from torch.nn import Module
 from torch.nn import init
@@ -19,9 +20,8 @@ def drop_connect_training(input: Tensor, mask: Tensor, weight: Tensor, bias: Opt
 
 def drop_connect_inference(input: Tensor, weight: Tensor, p: float, bias: Optional[Tensor] = None) -> Tensor:
     mean = (1-p)*linear(input, weight, bias)
-    variance = p*(1-p)*linear(input**2, weight**2, bias**2)
-    return Normal(mean, variance.sqrt()).sample((input.size(0),))
-
+    variance = p*(1-p)*linear(input**2, weight**2)
+    return Normal(mean, variance.sqrt()).sample(Size([input.size(0)]))
 
 class DropConnectLinear(Module):
     __constants__ = ['in_features', 'out_features', 'p', 'max_batch_size']
