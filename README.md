@@ -152,7 +152,7 @@ Here are some results:
 
 You can check the code in the notebook [mnist-runs.ipynb](mnist-runs.ipynb).
 
-The tensorboard logs are in the folder [runs](runs) and visualize them in your computer with tensorboard:
+The tensorboard logs are in the folder [logs](logs) and visualize them in your computer with tensorboard:
 
 ```bash
 git clone https://github.com/mr-racoon-97/drop-connect.git
