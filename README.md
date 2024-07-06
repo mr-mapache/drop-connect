@@ -94,3 +94,72 @@ where $p$ is the probability of the Bernoulli distribution.
 Again, a single distribution is not enough, so a different distribution must be chosen for each example, and the output of the DropConnect layer should, as the paper suggests, be averaged only after the activation function.
 
 So for models with dropconnect, batch average should be applied after the activation function.
+
+
+### Results
+
+At the moment, two models where trained with the MNIST dataset, a simple perceptron with a hidden layer and dropout and a dropconnect perceptron. Both trained with SGD. 
+
+### Dropout:
+
+```python
+
+class Perceptron(Module):
+    def __init__(self, input_features: int, hidden_dimension: int, output_features: int, p: float):
+        super().__init__()
+        self.flatten = Flatten()
+        self.layers = Sequential(
+            Linear(input_features, hidden_dimension),
+            ReLU(),
+            Dropout(p),
+            Linear(hidden_dimension, output_features),
+        )
+
+    def forward(self, input: Tensor) -> Tensor:
+        input = self.flatten(input)
+        return self.layers(input)
+
+```
+
+### DropConnect
+
+```python
+
+class DropConnectPerceptron(Module):
+    def __init__(self, input_features: int, hidden_dimension: int, output_features: int, p: float):
+        super().__init__()
+        self.flatten = Flatten()
+        self.layers = Sequential(
+            DropConnectLinear(input_features, hidden_dimension, p=p, max_batch_size=256),
+            ReLU(),
+            DropConnectBatchAverage(),
+            DropConnectLinear(hidden_dimension, output_features, p=p, max_batch_size=256),
+            ReLU(),
+            DropConnectBatchAverage()
+        )
+
+    def forward(self, input: Tensor) -> Tensor:
+        input = self.flatten(input)
+        return self.layers(input)
+```
+
+Here are some results:
+
+![Dropout](plots/Perceptron-3e56829e-bc6c-412e-8f9c-632f8e583f20.png)
+
+
+![DropConnect](plots/DropConnectPerceptron-3e56829e-bc6c-412e-8f9c-632f8e583f20.png)
+
+You can check the code in the notebook [mnist-runs.ipynb](mnist-runs.ipynb).
+
+The tensorboard logs are in the folder [runs](runs) and you can visualize them with tensorboard:
+
+```bash
+tensorboard --logdir runs
+```
+
+The plots of experiments are stored automatically in the folder [plots](plots) and you can check them in the notebook.
+
+### Contact
+
+If you have any questions, feel free to contact me at [curious.mr.fox.97@gmail.com](mailto:curious.mr.fox.97@gmail.com)
