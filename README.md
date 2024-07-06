@@ -152,13 +152,16 @@ Here are some results:
 
 You can check the code in the notebook [mnist-runs.ipynb](mnist-runs.ipynb).
 
-The tensorboard logs are in the folder [runs](runs) and you can visualize them with tensorboard:
+The tensorboard logs are in the folder [runs](runs) and visualize them in your computer with tensorboard:
 
 ```bash
-tensorboard --logdir runs
+git clone https://github.com/mr-racoon-97/drop-connect.git
+cd drop-connect
+pip install tensorboard
+tensorboard --logdir logs/
 ```
 
-The plots of experiments are stored automatically in the folder [plots](plots) and you can check them in the notebook.
+Then go to [http://localhost:6006](http://localhost:6006) in your browser. Model architecture, loss, and accuracy are stored in the logs. The plots of experiments are stored automatically in the folder [plots](plots) and you can check them in the notebook.
 
 ### Contact
 
