@@ -7,7 +7,7 @@ The paper [DropConnect](http://yann.lecun.com/exdb/publis/pdf/wan-icml-13.pdf) i
 
 Let $X \in \mathbb{R}^{n \times d}$ a tensor with $n$ examples and $d$ features a $W \in \mathbb{R}^{l \times d}$ a tensor of weights.
 
-For training, a mask matrix $M$ is created from a Bernoulli distribution to mask elements of a weight matrix $W$, using the Hadamard product.
+For training, a mask matrix $M$ is created from a Bernoulli distribution to mask elements of the weight matrix $W$ , using the Hadamard product, in order to drop neuron connections instead of turning off neurons like in dropout
 
 For a single example, the implementation is straightforward, just apply a mask $M$ to a weight tensor $W$. However, according to the paper: "A key component to successfully training with DropConnect is the selection of a different mask for each training example. Selecting a single mask for a subset of training examples, such as a mini-batch of 128 examples, does not regularize the model enough in practice."
 
@@ -92,3 +92,5 @@ $$ \sigma^2_M[X] = p(1 - p) (X \odot X) (W^T \odot W^T) $$
 where $p$ is the probability of the Bernoulli distribution.
 
 Again, a single distribution is not enough, so a different distribution must be chosen for each example, and the output of the DropConnect layer should, as the paper suggests, be averaged only after the activation function.
+
+So for models with dropconnect, batch average should be applied after the activation function.

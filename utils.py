@@ -104,8 +104,8 @@ def run(model: Module, optimizer: Optimizer, criterion: Criterion, device: str, 
     ax = metrics_plot.add_subplot(1, 2, 2)
     plot(summary.metrics, 'accuracy', ax)
 
-    if not os.path.exists('plots'):
-        os.makedirs('plots')
+    if not os.path.exists('./plots'):
+        os.makedirs('./plots')
 
-    savefig(f'plots/{summary.name}-{summary.id}.pdf', bbox_inches ="tight" )
+    savefig(f'plots/{summary.name}-{summary.id}.png', bbox_inches ="tight" )
     show()

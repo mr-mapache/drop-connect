@@ -60,9 +60,9 @@ class Summary:
 
     def close(self):
         print(f"Experiment {self.name} with id {self.id} completed")
-        print(f"Results:")
-        print(f"Average loss: {self.metrics['train'].loss:.4f} (train), {self.metrics['test'].loss:.4f} (test)")
-        print(f"Average accuracy: {self.metrics['train'].accuracy:.4f} (train), {self.metrics['test'].accuracy:.4f} (test)")
+        print(f"#### Results for {self.name}:")
+        print(f"- Average loss: {self.metrics['train'].loss:.4f} (train), {self.metrics['test'].loss:.4f} (test)")
+        print(f"- Average accuracy: {self.metrics['train'].accuracy:.4f} (train), {self.metrics['test'].accuracy:.4f} (test)")
         print(f"----------------------------------------------------------------")
         self.writer.close()
  

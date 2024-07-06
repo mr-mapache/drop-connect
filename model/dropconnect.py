@@ -24,6 +24,41 @@ def drop_connect_inference(input: Tensor, weight: Tensor, p: float, bias: Option
     return Normal(mean, variance.sqrt()).sample(Size([input.size(0)]))
 
 class DropConnectLinear(Module):
+
+    r"""Applies a linear transformation to the incoming data with DropConnect: :math:`y = xA^T + b`.
+
+    WARNING: The module returns a tensor with different shape in the training and inference modes. Be sure
+    of handle this with the DropConnectBatchAverage that averages the output in the batch dimension.
+
+    DropConnect is a generalization of Dropout, where weights are randomly dropped 
+    during training. This method was introduced by Wan et al. in the paper 
+    "Regularization of Neural Networks using DropConnect" 
+    (http://yann.lecun.com/exdb/publis/pdf/wan-icml-13.pdf).
+
+    Args:
+        in_features: size of each input sample.
+        out_features: size of each output sample.
+        bias: If set to ``False``, the layer will not learn an additive bias. Default: ``True``.
+        p: Probability of an element to be zeroed during training. Default: ``0.5``.
+        max_batch_size: Maximum batch size for the input tensor. Default: ``512``.
+        device: The desired device of the parameters and buffers.
+        dtype: The desired data type of the parameters and buffers.
+
+    Shape:
+        - Input: :math:`(*, H_{in})` where :math:`*` means any number of dimensions including none and :math:`H_{in} = \text{in\_features}`.
+        - Output: :math:`(*, H_{out})` where all but the last dimension are the same shape as the input and :math:`H_{out} = \text{out\_features}`.
+
+    Attributes:
+        weight: The learnable weights of the module of shape :math:`(\text{out\_features}, \text{in\_features})`. 
+                The values are initialized from :math:`\mathcal{U}(-\sqrt{k}, \sqrt{k})`, where :math:`k = \frac{1}{\text{in\_features}}`.
+        bias: The learnable bias of the module of shape :math:`(\text{out\_features})`. 
+              If :attr:`bias` is ``True``, the values are initialized from :math:`\mathcal{U}(-\sqrt{k}, \sqrt{k})` where :math:`k = \frac{1}{\text{in\_features}}`.
+        weight_mask: The mask for the weight tensor of shape :math:`(\text{max\_batch\_size}, \text{out\_features}, \text{in\_features})`.
+        bias_mask: The mask for the bias tensor of shape :math:`(\text{max\_batch\_size}, \text{out\_features})`.
+        p: Probability of an element to be zeroed during training.
+        max_batch_size: Maximum batch size for the input tensor.
+    """
+
     __constants__ = ['in_features', 'out_features', 'p', 'max_batch_size']
     in_features: int
     out_features: int
@@ -74,6 +109,28 @@ def batch_average(input: Tensor) -> Tensor:
     return input.mean(dim=0)
 
 class DropConnectBatchAverage(Module):
+
+    r"""Applies batch averaging during inference.
+
+    This module averages the input tensor across the batch dimension during inference. 
+    During training, it simply returns the input tensor as is.
+
+    This is useful when using DropConnect to ensure that the output is averaged 
+    over multiple runs, which can help in stabilizing the training process.
+
+    Shape:
+        - Input: :math:`(N, *)` where :math:`N` is the batch size and :math:`*` represents any number of additional dimensions.
+        - Output: :math:`(*)` where the output is averaged across the batch dimension.
+
+    Examples::
+
+        >>> m = DropConnectBatchAverage()
+        >>> input = torch.randn(128, 20)
+        >>> output = m(input)
+        >>> print(output.size())
+        torch.Size([20])
+    """
+
     def forward(self, input: Tensor) -> Tensor:
         if self.training:
             return input
