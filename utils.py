@@ -1,9 +1,11 @@
+import os
+from uuid import UUID
 from typing import Iterator, Tuple, Protocol
 from typing import Dict
 from typing import Optional
 from typing import List
 
-from matplotlib.pyplot import figure, show
+from matplotlib.pyplot import figure, show, savefig
 from matplotlib.axes import Axes
 
 import torch
@@ -12,38 +14,15 @@ from torch import Tensor
 from torch.nn import Module
 from torch.optim import Optimizer
 
+from metrics import Metrics
+from metrics import Summary
+
 class Criterion(Protocol):
     def __call__(self, input: Tensor, target: Tensor) -> Tensor:
         ...
 
 class Data(Protocol):
     def __iter__(self) -> Iterator[Tuple[Tensor, Tensor]]:
-        ...
-
-class Metrics(Protocol):
-    history: Dict[str, List]
-
-    def start(self, mode: str):
-        ...
-
-    def update(self, batch: int, loss: float, accuracy: float):
-        ...
-    
-    def stop(self):
-        ...
-    def reset(self):
-        ...
-
-class Summary(Protocol):
-    metrics: Dict[str, Metrics]
-    
-    def open(self):
-        ...
-
-    def close(self):
-        ...
-
-    def add_text(self, tag: str, text: str):
         ...
 
 def serialize(model: Module, optimizer: Optimizer, criterion: Criterion):
@@ -95,12 +74,15 @@ def plot(metrics: Dict[str, Metrics], metric: str, ax: Optional[Axes] = None):
 
     for key, value in metrics.items():
         ax.plot(value.history[metric], label=key)
+    
     ax.legend()
     ax.set_title(metric)
     ax.set_xlabel('epoch')
     ax.set_ylabel(metric)
+
     if ax is None:
         show()
+
 
 def run(model: Module, optimizer: Optimizer, criterion: Criterion, device: str, data: Dict[str, Data], summary: Summary, epochs: int = 30):
     summary.open()
@@ -113,5 +95,17 @@ def run(model: Module, optimizer: Optimizer, criterion: Criterion, device: str, 
         test(model, criterion, data['test'], summary.metrics['test'], device)
 
     summary.close()
-    plot(summary.metrics, 'loss')
-    plot(summary.metrics, 'accuracy')
+
+    metrics_plot = figure(figsize=(10, 5))
+    metrics_plot.suptitle(f'{summary.name}')
+    ax = metrics_plot.add_subplot(1, 2, 1)
+    plot(summary.metrics, 'loss', ax)
+
+    ax = metrics_plot.add_subplot(1, 2, 2)
+    plot(summary.metrics, 'accuracy', ax)
+
+    if not os.path.exists('plots'):
+        os.makedirs('plots')
+
+    savefig(f'plots/{summary.name}-{summary.id}.pdf', bbox_inches ="tight" )
+    show()
