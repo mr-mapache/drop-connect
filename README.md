@@ -5,10 +5,7 @@ The paper [DropConnect](http://yann.lecun.com/exdb/publis/pdf/wan-icml-13.pdf) i
 
 ## Training
 
-Let:
-
-- $ X \in \mathbb{R}^{n \times d} $ : A tensor with $n$ examples and $d$ features.
-- $ W \in \mathbb{R}^{l \times d} $ : A weight tensor.
+Let $X \in \mathbb{R}^{n \times d}$ a tensor with $n$ examples and $d$ features a $W \in \mathbb{R}^{l \times d}$ a tensor of weights.
 
 For training, a mask matrix $M$ is created from a Bernoulli distribution to mask elements of a weight matrix $W$, using the Hadamard product.
 
