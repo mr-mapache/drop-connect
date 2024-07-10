@@ -145,7 +145,7 @@ class DropConnectPerceptron(Module):
 
 Here are some results:
 
-![Dropout](plots/tPerceptron-f2ec30b1-2f6b-4e0b-aed8-da43ed916c07.png)
+![Dropout](plots/Perceptron-f2ec30b1-2f6b-4e0b-aed8-da43ed916c07.png)
 
 ![DropConnect](plots/DropConnectPerceptron-f2ec30b1-2f6b-4e0b-aed8-da43ed916c07.png)
 
