@@ -145,20 +145,11 @@ class DropConnectPerceptron(Module):
 
 Here are some results:
 
-![Dropout](plots/Perceptron-3e56829e-bc6c-412e-8f9c-632f8e583f20.png)
+![Dropout](plots/tPerceptron-f2ec30b1-2f6b-4e0b-aed8-da43ed916c07.png)
 
+![DropConnect](plots/DropConnectPerceptron-f2ec30b1-2f6b-4e0b-aed8-da43ed916c07.png)
 
-#### Results for Perceptron:
-- Average loss: 0.1597 (train), 0.2166 (test)
-- Average accuracy: 0.9591 (train), 0.9702 (test)
-
-![DropConnect](plots/DropConnectPerceptron-3e56829e-bc6c-412e-8f9c-632f8e583f20.png)
-
-#### Results for DropConnectPerceptron:
-- Average loss: 0.0633 (train), 0.0749 (test)
-- Average accuracy: 0.9820 (train), 0.9823 (test)
-
-You can check the code in the notebook [mnist-runs.ipynb](mnist-runs.ipynb).
+As you can see, the dropconnect layers reduces the overfitting of the model. You can check the code in the notebook [mnist-runs.ipynb](mnist-runs.ipynb).
 
 The tensorboard logs are in the folder [logs](logs) and visualize them in your computer with tensorboard:
 

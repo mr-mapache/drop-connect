@@ -2,6 +2,7 @@ from uuid import UUID, uuid4
 from dataclasses import dataclass, field
 from torch.utils.tensorboard import SummaryWriter
 from typing import Protocol, Optional
+from csv import DictWriter
 
 class Writer(Protocol):
     def add_scalar(self, tag: str, scalar_value: float, global_step: int):
@@ -39,6 +40,15 @@ class Metrics:
             self.writer.add_scalar(f'{self.mode}/loss', self.loss, self.epoch)
             self.writer.add_scalar(f'{self.mode}/accuracy', self.accuracy, self.epoch)
 
+    def write_to_csv(self, filename: str):
+        with open(filename, 'w', newline='') as csvfile:
+            fieldnames = ['epoch', 'loss', 'accuracy']
+            writer = DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            for epoch, (loss, accuracy) in enumerate(zip(self.history['loss'], self.history['accuracy']), start=1):
+                writer.writerow({'epoch': epoch, 'loss': loss, 'accuracy': accuracy})
+
+
 class Summary:
     def __init__(self, name: str = None, id: UUID = None) -> None:
         self.id = id or uuid4()
@@ -64,10 +74,19 @@ class Summary:
         print(f"- Average loss: {self.metrics['train'].loss:.4f} (train), {self.metrics['test'].loss:.4f} (test)")
         print(f"- Average accuracy: {self.metrics['train'].accuracy:.4f} (train), {self.metrics['test'].accuracy:.4f} (test)")
         print(f"----------------------------------------------------------------")
+        
+        path = f"{'results/'}{self.name}-{self.id}.csv"
+        self.metrics['train'].write_to_csv(path.replace('.csv', '-train.csv'))
+        self.metrics['test'].write_to_csv(path.replace('.csv', '-test.csv'))
+        
         self.writer.close()
  
     def add_text(self, tag: str, text: str):
+        with open(f'parameters/{self.name}-{self.id}.txt', 'a') as f:
+            f.write(f'{tag}: {text}\n')     
+
         if self.writer:
             self.writer.add_text(tag, text)
+
         print(f'{tag}: {text}')
         print(f"----------------------------------------------------------------")
