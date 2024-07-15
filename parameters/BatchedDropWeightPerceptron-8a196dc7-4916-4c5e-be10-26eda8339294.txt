@@ -1,0 +1,24 @@
+model: OptimizedModule(
+  (_orig_mod): BatchedDropWeightPerceptron(
+    (flatten): Flatten(start_dim=1, end_dim=-1)
+    (layers): Sequential(
+      (0): BatchedDropWeightLinear(in_features=784, out_features=512, bias=True, p=0.4, max_batch_size=256)
+      (1): ReLU()
+      (2): BatchedDropWeightLinear(in_features=512, out_features=10, bias=True, p=0.4, max_batch_size=256)
+    )
+  )
+)
+optimizer: Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+)
+criterion: CrossEntropyLoss()

@@ -1,7 +1,8 @@
 # drop-connect
 
-The paper [DropConnect](http://yann.lecun.com/exdb/publis/pdf/wan-icml-13.pdf) introduces a regularization technique that is similar to Dropout, but instead of dropping out individual units, it drops out individual connections between units. This is done by applying a mask to the weights of the network, which is sampled from a Bernoulli distribution.
+The paper [DropConnect](https://cds.nyu.edu/projects/regularization-neural-networks-using-dropconnect/) introduces a regularization technique that is similar to Dropout, but instead of dropping out individual units, it drops out individual connections between units. This is done by applying a mask to the weights of the network, which is sampled from a Bernoulli distribution.
 
+![DropConnectImage](/dropconnect.png)
 
 ## Training
 
