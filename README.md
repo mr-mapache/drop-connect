@@ -158,7 +158,7 @@ As you can see, the dropconnect layers reduces the overfitting of the model. You
 The tensorboard logs are in the folder [logs](logs) and visualize them in your computer with tensorboard:
 
 ```bash
-git clone https://github.com/mr-racoon-97/drop-connect.git
+git clone https://github.com/mr-raccoon-97/drop-connect.git
 cd drop-connect
 pip install tensorboard
 tensorboard --logdir logs/
