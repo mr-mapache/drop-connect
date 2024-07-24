@@ -71,6 +71,16 @@ $$ J \odot M $$
 
 So there is no need to implement an additional backpropagation operation, and only the Hadamard product already provided by Pytorch is needed. 
 
+The training phase, then can be implemented as follows: 
+
+```python
+def drop_connect_training(input: Tensor, mask: Tensor, weight: Tensor, bias: Optional[Tensor] = None, bias_mask: Optional[Tensor] = None) -> Tensor:
+    input = (input.unsqueeze(1)@torch.masked_fill(weight, mask, 0).transpose(1,2)).squeeze()
+    if bias is not None:
+        assert bias_mask is not None , "bias mask is required when bias is provided"
+        input = input + torch.masked_fill(bias, bias_mask, 0)
+    return input
+```
 
 ## Inference
 
@@ -99,6 +109,14 @@ Again, a single distribution is not enough, so a different distribution must be 
 
 So for models with dropconnect, batch average should be applied after the activation function.
 
+The inference phase can be implemented then as follows: 
+
+```
+def drop_connect_inference(input: Tensor, weight: Tensor, p: float, bias: Optional[Tensor] = None) -> Tensor:
+    mean = (1-p)*linear(input, weight, bias)
+    variance = p*(1-p)*linear(input**2, weight**2)
+    return Normal(mean, variance.sqrt()).sample(Size([input.size(0)]))
+```
 
 ### Results
 
