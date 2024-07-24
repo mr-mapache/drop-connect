@@ -111,7 +111,7 @@ So for models with dropconnect, batch average should be applied after the activa
 
 The inference phase can be implemented then as follows: 
 
-```
+```python
 def drop_connect_inference(input: Tensor, weight: Tensor, p: float, bias: Optional[Tensor] = None) -> Tensor:
     mean = (1-p)*linear(input, weight, bias)
     variance = p*(1-p)*linear(input**2, weight**2)
