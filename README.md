@@ -1,13 +1,15 @@
-# drop-connect
+# Drop Connect
 
 The paper [DropConnect](https://cds.nyu.edu/projects/regularization-neural-networks-using-dropconnect/) introduces a regularization technique that is similar to Dropout, but instead of dropping out individual units, it drops out individual connections between units. This is done by applying a mask to the weights of the network, which is sampled from a Bernoulli distribution.
 
-#### Donwload the paper.
+[Here](model/dropconnect.py) is my implementation of drop connect layers in PyTorch.
+
+#### Donwload the paper
 Here's a link to the paper: [DropConnectPapper](https://proceedings.mlr.press/v28/wan13.html)
 
 ![DropConnectImage](/dropconnect.png)
 
-## Training
+### Training
 
 Let $X \in \mathbb{R}^{n \times d}$ a tensor with $n$ examples and $d$ features a $W \in \mathbb{R}^{l \times d}$ a tensor of weights.
 
@@ -63,7 +65,7 @@ $$ \text{DropConnect}(X, W, M) = \begin{bmatrix}
 \end{bmatrix} $$
 
 
-### Backpropagation
+#### Backpropagation
 
 In order to update the weight matrix $W$ in a DropConnect layer, the mask is applied to the gradient to update only those elements that were active in the forward pass. but this is already done by the automatic differentiation in Pytorch, since if $J$ is the gradient coming from the linear operation, the gradient propagated by the Hadamard product with respect to $W$ will be:
 
@@ -82,7 +84,7 @@ def drop_connect_training(input: Tensor, mask: Tensor, weight: Tensor, bias: Opt
     return input
 ```
 
-## Inference
+### Inference
 
 For inference, the output of the DropConnect layer should be computed as:
 
