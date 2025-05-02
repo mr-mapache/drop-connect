@@ -37,8 +37,10 @@ def dropconnect(features: Tensor, weight: Tensor, bias: Tensor | None = None, p:
         In Proceedings of the 30th International Conference on Machine Learning (pp. 1058–1066). 
         https://proceedings.mlr.press/v28/wan13.html
     """
-
+    assert 0 <= p < 1, f"DropConnect probability p must be in [0, 1), got {p}"
     mask = bernoulli(full((features.shape[0], weight.shape[0], weight.shape[1]), p)).bool() 
     features = (features / (1 - p)).unsqueeze(-2) @ masked_fill(weight, mask, 0).transpose(-2, -1)
-    return (features + bias).squeeze() if bias else features.squeeze()
+    print(features.squeeze(), bias)
+    return features.squeeze() + bias if bias is not None else  features.squeeze()
+
 

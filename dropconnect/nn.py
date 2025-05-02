@@ -39,6 +39,8 @@ class Dropconnect(Linear):
     """
  
     def __init__(self, in_features: int, out_features: int, bias: bool = True, p: float = 0.5):
+        if not (0 <= p < 1):
+            raise ValueError(f"DropConnect probability p must be in [0, 1), got {p}")
         super().__init__(in_features, out_features, bias) 
         self.p = p
 
