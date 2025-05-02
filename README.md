@@ -54,19 +54,9 @@ $$
     \end{bmatrix}
     \right) \\
     \\
-    \frac{1}{1-p}\begin{bmatrix}  x^2{}_1 & x^2{}_2 & \cdots & x^2{}_d \end{bmatrix}
-    \left(\begin{bmatrix}
-        m^{21}{}_1 & m^{21}{}_2 & \cdots & m^{21}{}_l \\
-        m^{22}{}_1 & m^{22}{}_2 & \cdots & m^{22}{}_l \\
-        \vdots & \vdots & \ddots & \vdots \\
-        m^{2d}{}_1 & m^{2d}{}_2 & \cdots & m^{2d}{}_l \\
-    \end{bmatrix} \odot \begin{bmatrix}
-        w^1{}_1 & w^1{}_2 & \cdots & w^1{}_l \\
-        w^2{}_1 & w^2{}_2 & \cdots & w^2{}_l \\
-        \vdots & \vdots & \ddots & \vdots \\
-        w^d{}_1 & w^d{}_2 & \cdots & w^d{}_l \\
-    \end{bmatrix}
-    \right) \\
+    \\
+    \vdots
+    \\
     \\
     \frac{1}{1-p}\begin{bmatrix}  x^n{}_1 & x^n{}_2 & \cdots & x^n{}_d \end{bmatrix}
     \left(\begin{bmatrix}
