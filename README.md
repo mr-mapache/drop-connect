@@ -1,7 +1,3 @@
-# Archieved
-
-This implementation has issues. I will be creating an installable package with a better implementation and documentation soon.
-
 # Drop Connect
 
 The paper [DropConnectPapper](https://proceedings.mlr.press/v28/wan13.html) introduces a regularization technique that is similar to Dropout, but instead of dropping out individual units, it drops out individual connections between units. This is done by applying a mask to the weights of the network, which is sampled from a Bernoulli distribution. 
