@@ -1,0 +1,17 @@
+[project]
+name = "dropconnect"
+version = "0.1.0"
+description = "A PyTorch implementation of dropconnect layers"
+authors = [
+    {name = "mr-mapache",email = "eric.m.cardozo@mi.unc.edu.ar"}
+]
+license = {text = "MIT License"}
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
