@@ -4,24 +4,7 @@ The paper [DropConnectPapper](https://proceedings.mlr.press/v28/wan13.html) intr
 
 ![DropConnectImage](/dropconnect.png)
 
-
-### Installing
-
-```bash
-pip install dropconnect
-```
-
-### Usage
-
-```python
-from torch import Tensor
-from dropconnect import Dropconnect
-
-layer = Dropconnect(in_features=5, out_features=10, bias=True, p=0.5)
-input = Tensor([[1,2,3,4,5],[2,3,4,5,6]])
-output = layer(input)
-print(output) # Can be used just like a drop-in replacement for linear layer.
-```
+NOT READY YET!
 
 ### Training
 
